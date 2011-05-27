@@ -87,6 +87,9 @@ namespace WindowLocker
                         Timer.Start ();
                         IsLocked = true;
                         break;
+                    case "clear":
+                        Console.Clear ();
+                        break;
                     case "change pass":
                         if (IsLocked)
                             break;

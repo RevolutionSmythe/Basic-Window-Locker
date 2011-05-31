@@ -21,6 +21,7 @@ namespace WindowLocker
         private static bool IsLocked = false;
         private static bool IsBlackList = true;
         private static string Password = "";
+        private static bool quiet = true;
 
         [DllImport ("user32.dll")]
         private static extern bool ShowWindowAsync (IntPtr hWnd, int nCmdShow);
@@ -90,6 +91,16 @@ namespace WindowLocker
                     case "clear":
                         Console.Clear ();
                         break;
+                    case "quiet":
+                        if (IsLocked)
+                            break;
+                        quiet = true;
+                        break;
+                    case "loud":
+                        if (IsLocked)
+                            break;
+                        quiet = false;
+                        break;
                     case "change pass":
                         if (IsLocked)
                             break;
@@ -127,6 +138,8 @@ namespace WindowLocker
                     case "help":
                         Console.WriteLine ("lock - locks the programs");
                         Console.WriteLine ("unlock - unlocks the programs");
+                        Console.WriteLine ("quiet - quiets the log output");
+                        Console.WriteLine ("loud - expands the log output");
                         Console.WriteLine ("quit - quits the locking application and unlocks all programs");
                         Console.WriteLine ("add program - adds a new program to the list of programs to block");
                         Console.WriteLine ("remove program - removes a program from the list of programs to block");
@@ -312,7 +325,7 @@ namespace WindowLocker
                             ShowWindowAsync (p.MainWindowHandle, SW_SHOWMINIMIZED);
                         }
                     }
-                    else
+                    else if (!quiet)
                         Console.WriteLine ("Could not find process " + proc);
                 }
             }
